@@ -1,0 +1,7 @@
+[package]
+name = "htmlifier"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+prse = "1.2.1"
