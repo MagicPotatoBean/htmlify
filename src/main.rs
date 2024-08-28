@@ -1,8 +1,60 @@
+use std::{ffi::OsStr, fs, path::Path};
+
 fn main() {
-    let input = std::fs::read("./in.md").unwrap();
+    convert_recursive("./markdown", "./markup", "./markdown");
+}
+fn convert_recursive<T, U, V>(markdownroot: U, markuproot: T, dir: V)
+where
+    T: AsRef<Path>,
+    U: AsRef<Path>,
+    V: AsRef<Path>,
+{
+    for entry in std::fs::read_dir(dir).unwrap().flatten() {
+        if entry.file_type().unwrap().is_dir() {
+            convert_recursive(markdownroot.as_ref(), markuproot.as_ref(), &entry.path());
+        } else if entry.file_type().unwrap().is_file() {
+            if entry.path().extension() == Some(OsStr::new("md")) {
+                convert(&markdownroot, &markuproot, &entry.path())
+            }
+        }
+    }
+}
+fn convert<T, U, V>(markdownroot: T, markuproot: U, file: V)
+where
+    T: AsRef<Path>,
+    U: AsRef<Path>,
+    V: AsRef<Path>,
+{
+    let input = std::fs::read(&file).unwrap();
     let in_str = String::from_utf8_lossy(&input);
-    let out_str = htmlify(in_str.to_string(), "My html doc");
-    std::fs::write("./out.html", out_str).unwrap();
+    let out_str = htmlify(
+        in_str.to_string(),
+        &file
+            .as_ref()
+            .file_name()
+            .unwrap()
+            .to_string_lossy()
+            .to_string()
+            .split_once(".")
+            .unwrap_or((
+                file.as_ref()
+                    .file_name()
+                    .unwrap()
+                    .to_string_lossy()
+                    .to_string()
+                    .as_str(),
+                "",
+            ))
+            .0,
+    );
+    std::fs::write(
+        markuproot
+            .as_ref()
+            .join(file.as_ref().strip_prefix(markdownroot).unwrap())
+            .with_extension("html"),
+        out_str,
+    )
+    .unwrap();
 }
 fn htmlify(text: String, title: &str) -> String {
     let mut final_text = format!("<!DOCTYPE html>
@@ -20,21 +72,26 @@ fn htmlify(text: String, title: &str) -> String {
             body {{text-align: center;background-color: #1B1A21;color: white;font-family: 'JetBrains Mono';font-size: 22px}}
             div {{margin:auto;width:50%;text-align:center}}
             h1 {{margin:auto;max-width: 800px}}
-            h2, h3, h4, h5, h6 {{margin:auto;max-width: 600px}}
+            h2, h3, h4, h5, h6 {{margin:auto;max-width: 700px}}
             p {{margin:auto;max-width: 700px}}
             code {{margin:auto;max-width: 700px;word-break:break-all}}
             div:has(code) {{padding: 5px;max-width: 700px;font-size: 15px;background-color: #23222B;border: 1px solid white;border-radius: 5px;text-align: left;margin-top:20px;margin-bottom:20px}}
             img {{width:500px;padding-top:5px;padding-bottom:5px}}
             figure {{max-width: 500px;margin:auto;border-top-width:1px;border-top-style:solid;border-bottom-width:1px;border-bottom-style:solid;margin-bottom:30px;margin-top:30px}}
             figcaption {{margin-bottom:10px}}
+            a {{color: aquamarine}}
         </style>
     </head>
     <body>");
     let mut state = MarkdownState::Normal;
     for mut line in text.lines().map(ToOwned::to_owned) {
-        if line == "" {
-            final_text.push_str("<br>")
-        } else if !state.is_code() {
+        //if line == "" {
+        //    if !state.is_code() {
+        //        state = MarkdownState::Normal
+        //    }
+        //    final_text.push_str("<br>")
+        //} else
+        if !state.is_code() {
             if let Ok(parsed) = prse::try_parse!(line, "![{}]({})") {
                 let (display, link): (&str, &str) = parsed;
                 final_text.push_str("<div><figure><img src=\"");
@@ -222,6 +279,9 @@ fn htmlify(text: String, title: &str) -> String {
                 );
                 final_text.push_str("<br>")
             }
+        }
+        if line == "" {
+            final_text.push_str("<br>");
         }
     }
     final_text.push_str("</body></html>");
