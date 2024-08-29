@@ -69,6 +69,7 @@ fn htmlify(text: String, title: &str) -> String {
             span.str {{color:#9bc380}}
             span.lit {{color:#df946f}}
             span.kwd {{color:#ca9ee6}}
+            span.com {{color:#AAAAAA}}
             body {{text-align: center;background-color: #1B1A21;color: white;font-family: 'JetBrains Mono';font-size: 22px}}
             div {{margin:auto;width:50%;text-align:center}}
             h1 {{margin:auto;max-width: 800px}}
