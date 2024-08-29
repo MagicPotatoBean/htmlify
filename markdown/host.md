@@ -14,10 +14,10 @@ Using host.rs can be a little bit confusing at first, but for the most part it i
 ``` sh
     $ host.rs -a 0.0.0.0:80 -f ./file_to_share.txt /name_on_server.txt
 ```
-"-a 0.0.0.0:80" means:
+`-a 0.0.0.0:80` means:
 "host these files on any address, on port 80" (the standard HTTP port)
 
-"-f ./file_to_share.txt /name_on_server.txt" means:
+`-f ./file_to_share.txt /name_on_server.txt` means:
 "host the file stored at ./file_to_share.txt, and make it accessible from http://YOUR-IP-ADDRESS/name_on_server.txt
 
 The need for the second parameter representing name-on-server was needed as if you had two files with the same name, you simply couldnt host both at the same time without renaming them, but now, you can simply change the name-on-server.
