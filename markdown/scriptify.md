@@ -25,7 +25,7 @@ You would run:
 ``` sh
     scriptify.rs -r my_repo -o my_repo/my_repo_script.rs
 ```
-Then, scriptify would take each of your modules and store them in the new script file, using the mod{} block to keep namespacing identical (although I needed to then remove "mod MODULE" calls, otherwise it tries to call in an extra file which now doesn't exist).
+Then, scriptify would take each of your modules and store them in the new script file, using the `mod{}` block to keep namespacing identical (although I needed to then remove `mod ModuleName` calls, otherwise it tries to call in an extra file which now doesn't exist).
 
 Now, to run it, you can just run
 ``` sh

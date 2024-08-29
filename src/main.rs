@@ -76,7 +76,8 @@ fn htmlify(text: String, title: &str) -> String {
             h2, h3, h4, h5, h6 {{margin:auto;max-width: 700px}}
             p {{margin:auto;max-width: 700px}}
             code {{margin:auto;max-width: 700px;word-break:break-all}}
-            div:has(code) {{padding: 5px;max-width: 700px;font-size: 15px;background-color: #23222B;border: 1px solid white;border-radius: 5px;text-align: left;margin-top:20px;margin-bottom:20px}}
+            span.inline_code {{padding-right: 5px;padding-left: 5px;padding-bottom: 2px;padding-top: 2px;max-width: 700px;font-size: 15px;background-color: #23222B;border: 1px solid white;border-radius: 5px;text-align: left;margin-top:20px;margin-bottom:20px;display:inline}}
+            div.has_code {{padding: 5px;max-width: 700px;font-size: 15px;background-color: #23222B;border: 1px solid white;border-radius: 5px;text-align: left;margin-top:20px;margin-bottom:20px}}
             img {{width:500px;padding-top:5px;padding-bottom:5px}}
             figure {{max-width: 500px;margin:auto;border-top-width:1px;border-top-style:solid;border-bottom-width:1px;border-bottom-style:solid;margin-bottom:30px;margin-top:30px}}
             figcaption {{margin-bottom:10px}}
@@ -93,6 +94,28 @@ fn htmlify(text: String, title: &str) -> String {
         //    final_text.push_str("<br>")
         //} else
         if !state.is_code() {
+            let mut is_para = true;
+            if let Ok(parsed) = prse::try_parse!(line, "``` {}") {
+                is_para = false;
+                let lang: &str = parsed;
+                state = MarkdownState::Code;
+                final_text.push_str(&format!(
+                    "<div class=\"has_code\"><code class=\"prettyprint {lang}\">"
+                ));
+            } else if line.starts_with("```") {
+                is_para = false;
+                state = MarkdownState::Code;
+                final_text.push_str(&format!(
+                    "<div class=\"has_code\"><code class=\"prettyprint\">"
+                ));
+            } else {
+                while let Ok(parsed) = prse::try_parse!(line, "{}`{}`{}") {
+                    let (before, inside, after): (&str, &str, &str) = parsed;
+                    line = format!(
+                        "{before}<span class=\"inline_code\"><code>{inside}</code></span>{after}"
+                    );
+                }
+            }
             if let Ok(parsed) = prse::try_parse!(line, "![{}]({})") {
                 let (display, link): (&str, &str) = parsed;
                 final_text.push_str("<div><figure><img src=\"");
@@ -253,14 +276,7 @@ fn htmlify(text: String, title: &str) -> String {
                 final_text.push_str("<div><h6>");
                 final_text.push_str(&line[7..]);
                 final_text.push_str("</div></h6>");
-            } else if let Ok(parsed) = prse::try_parse!(line, "``` {}") {
-                let lang: &str = parsed;
-                state = MarkdownState::Code;
-                final_text.push_str(&format!("<div><code class=\"prettyprint {lang}\">"));
-            } else if line.starts_with("```") {
-                state = MarkdownState::Code;
-                final_text.push_str(&format!("<div><code class=\"prettyprint\">"));
-            } else {
+            } else if is_para {
                 final_text.push_str("<div><p>");
                 final_text.push_str(&line);
                 final_text.push_str("</p></div>");
