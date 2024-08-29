@@ -13,13 +13,13 @@ For a workspace like the following:
 
 ``` none
     my_repo/
-      ├ Cargo.toml
-      ├ Cargo.lock
-      └ src/
-          ├ main.rs
-          ├ my_lib.rs
-          └ my_other_lib/
-              └ mod.rs
+      > Cargo.toml
+      > Cargo.lock
+      > src/
+          > main.rs
+          > my_lib.rs
+          > my_other_lib/
+              > mod.rs
 ```
 You would run:
 ``` sh
