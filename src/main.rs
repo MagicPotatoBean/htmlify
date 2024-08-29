@@ -175,7 +175,7 @@ fn htmlify(text: String, title: &str) -> String {
                 }
                 let name: &str = parsed;
                 final_text.push_str(&format!(
-                    "<li><input type=\"checkbox\" name=\"{name}\"><label> {name}</label><br></li>"
+                    "<li><input type=\"checkbox\" name=\"{name}\"><label> {name}</label></li><br>"
                 ));
                 continue;
             } else if let Ok(parsed) = prse::try_parse!(line, "- [{}] {}") {
@@ -185,7 +185,7 @@ fn htmlify(text: String, title: &str) -> String {
                 }
                 let (_, name): (char, &str) = parsed;
                 final_text.push_str(&format!(
-                    "<li><input type=\"checkbox\" name=\"{name}\" checked><label> {name}</label></li>"
+                    "<li><input type=\"checkbox\" name=\"{name}\" checked><label> {name}</label></li><br>"
                 ));
                 continue;
             } else {
@@ -200,7 +200,7 @@ fn htmlify(text: String, title: &str) -> String {
                 }
                 final_text.push_str("<li>");
                 final_text.push_str(&line[2..]);
-                final_text.push_str("</li>");
+                final_text.push_str("</li><br>");
                 state = MarkdownState::Ul;
                 continue;
             } else {
@@ -214,7 +214,7 @@ fn htmlify(text: String, title: &str) -> String {
                 }
                 final_text.push_str("<li>");
                 final_text.push_str(&line[3..]);
-                final_text.push_str("</li>");
+                final_text.push_str("</li><br>");
                 state = MarkdownState::Ol;
                 continue;
             } else {
