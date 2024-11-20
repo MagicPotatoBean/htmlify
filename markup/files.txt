@@ -1,0 +1,17 @@
+# Tempfile.co.uk
+Welcome to my file sharing website, it is currently free to use and I dont plan on changing that any time soon.
+
+All I ask is to be respectful and not abuse the service, as then I may have to take it down, and everyone loses out.
+
+## How to use it
+Simply run:
+$ curl --upload-file /path/to/file.txt tempfiles.co.uk
+And cURL will return the path at which "/path/to/file.txt" is hosted.
+
+Or for a progress bar (such as for large files), run:
+$ curl --progress-bar --upload-file /path/to/file.txt tempfiles.co.uk | cat
+However, adding "| cat" to the end may cause windows users to lose the link since windows doesn't have the `cat` utility natively
+
+## How long are files hosted
+Files are cleaned up once per hour, and any file older than 1hr will be delete, so files will remain accessible for 1-2hrs.
+However, as this is a self-hosted project, I cannot provide any guarantees of reliability or uptime, so please PLEASE under no circumstances should my server have the only copy of a file you want, always have a backup just in case.

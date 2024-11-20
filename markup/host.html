@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>host</title>
+        <link href='https://fonts.googleapis.com/css?family=JetBrains Mono' rel='stylesheet'>
+        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+        <style>
+            span.pln {color:#84a0e0}
+            span.pun {color:#c6d0f5}
+            span.str {color:#9bc380}
+            span.lit {color:#df946f}
+            span.kwd {color:#ca9ee6}
+            span.com {color:#AAAAAA}
+            body {text-align: center;background-color: #1B1A21;color: white;font-family: 'JetBrains Mono';font-size: 22px}
+            div {margin:auto;width:50%;text-align:center}
+            h1 {margin:auto;max-width: 800px}
+            h2, h3, h4, h5, h6 {margin:auto;max-width: 700px}
+            p {margin:auto;max-width: 700px}
+            code {margin:auto;max-width: 700px;word-break:break-all}
+            span.inline_code {padding-right: 5px;padding-left: 5px;padding-bottom: 2px;padding-top: 2px;max-width: 700px;font-size: 15px;background-color: #23222B;border: 1px solid white;border-radius: 5px;text-align: left;margin-top:20px;margin-bottom:20px;display:inline}
+            div.has_code {padding: 5px;max-width: 700px;font-size: 15px;background-color: #23222B;border: 1px solid white;border-radius: 5px;text-align: left;margin-top:20px;margin-bottom:20px}
+            img {width:500px;padding-top:5px;padding-bottom:5px}
+            figure {max-width: 500px;margin:auto;border-top-width:1px;border-top-style:solid;border-bottom-width:1px;border-bottom-style:solid;margin-bottom:30px;margin-top:30px}
+            figcaption {margin-bottom:10px}
+            a {color: aquamarine}
+        </style>
+    </head>
+    <body><div><h1><a href="/">zoe.soutter.com</a></div></h1><hr><div><p></p></div><br><div><h1>Host</div></h1><div><p></p></div><br><div><p><a href="https://github.com/MagicPotatoBean/host">Github repo</a></p></div><div><p></p></div><br><div><p>Host is a simple, small CLI app I wrote using rust-script (explained further down) which allows you to host files over LAN (or WAN if you enable port-forwarding) so you dont need to find some paid service to do the same.</p></div><div><p></p></div><br><div><h2>How to use it</div></h2><div><p></p></div><br><div><p>Using host.rs can be a little bit confusing at first, but for the most part it is fairly simple:</p></div><div><p></p></div><br><div class="has_code"><code class="prettyprint sh">&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;host.rs&nbsp;-a&nbsp;0.0.0.0:80&nbsp;-f&nbsp;./file_to_share.txt&nbsp;/name_on_server.txt<br></code></div><div><p><span class="inline_code"><code>-a 0.0.0.0:80</code></span> means:</p></div><div><p>"host these files on any address, on port 80" (the standard HTTP port)</p></div><div><p></p></div><br><div><p><span class="inline_code"><code>-f ./file_to_share.txt /name_on_server.txt</code></span> means:</p></div><div><p>"host the file stored at ./file_to_share.txt, and make it accessible from http://YOUR-IP-ADDRESS/name_on_server.txt</p></div><div><p></p></div><br><div><p>The need for the second parameter representing name-on-server was needed as if you had two files with the same name, you simply couldnt host both at the same time without renaming them, but now, you can simply change the name-on-server.</p></div><div><p></p></div><br><div><h2>Rust-script</div></h2><div><p></p></div><br><div><p>I wrote this app using <a href="https://discourse.nixos.org/t/nix-users-you-can-fearlessly-start-using-rust-scripts-already/35521/4">rust-script</a> where the cargo manifest is stored inside the source file, allowing you to execute the file like a shell script (if you have the <a href="https://nixos.org/download/">Nix package manager/Nixos</a> installed)</p></div></body></html>

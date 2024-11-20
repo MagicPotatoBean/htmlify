@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>htmlify</title>
+        <link href='https://fonts.googleapis.com/css?family=JetBrains Mono' rel='stylesheet'>
+        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+        <style>
+            span.pln {color:#84a0e0}
+            span.pun {color:#c6d0f5}
+            span.str {color:#9bc380}
+            span.lit {color:#df946f}
+            span.kwd {color:#ca9ee6}
+            span.com {color:#AAAAAA}
+            body {text-align: center;background-color: #1B1A21;color: white;font-family: 'JetBrains Mono';font-size: 22px}
+            div {margin:auto;width:50%;text-align:center}
+            h1 {margin:auto;max-width: 800px}
+            h2, h3, h4, h5, h6 {margin:auto;max-width: 700px}
+            p {margin:auto;max-width: 700px}
+            code {margin:auto;max-width: 700px;word-break:break-all}
+            span.inline_code {padding-right: 5px;padding-left: 5px;padding-bottom: 2px;padding-top: 2px;max-width: 700px;font-size: 15px;background-color: #23222B;border: 1px solid white;border-radius: 5px;text-align: left;margin-top:20px;margin-bottom:20px;display:inline}
+            div.has_code {padding: 5px;max-width: 700px;font-size: 15px;background-color: #23222B;border: 1px solid white;border-radius: 5px;text-align: left;margin-top:20px;margin-bottom:20px}
+            img {width:500px;padding-top:5px;padding-bottom:5px}
+            figure {max-width: 500px;margin:auto;border-top-width:1px;border-top-style:solid;border-bottom-width:1px;border-bottom-style:solid;margin-bottom:30px;margin-top:30px}
+            figcaption {margin-bottom:10px}
+            a {color: aquamarine}
+        </style>
+    </head>
+    <body><div><h1><a href="/">zoe.soutter.com</a></div></h1><hr><div><p></p></div><br><div><h1>HTMLify</div></h1><div><p></p></div><br><div><p><a href="https://github.com/MagicPotatoBean/htmlify">Github repo</a></p></div><div><p></p></div><br><div><p>HTMLify is a project I made specifically for this website, as I wanted a way to ensure all of my pages were formatted identically and so I didnt need to do tons of manual HTML editing, so i wrote this markdown parser to convert markdown into HTML with this styling!</p></div><div><p></p></div><br><div><p>Lots of markdown is easy to test for, i.e. headers were super simple to detect:</p></div><div class="has_code"><code class="prettyprint rs">//&nbsp;--snip--<br>}&nbsp;else&nbsp;if&nbsp;line.starts_with("#&nbsp;")&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;final_text.push_str("&lt;div&gt;&lt;h1&gt;");<br>&nbsp;&nbsp;&nbsp;&nbsp;final_text.push_str(&line[2..]);<br>&nbsp;&nbsp;&nbsp;&nbsp;final_text.push_str("&lt;/div&gt;&lt;/h1&gt;");<br>}&nbsp;else&nbsp;if&nbsp;line.starts_with("##&nbsp;")&nbsp;{<br>//&nbsp;--snip--<br></code></div><div><p>But for some things, like links, I might have several per line, or could have none, so had to write the following code to replace all instances of a link, with the HTML equivalent (and this happens before the rest of the parsing i.e. headers and such)</p></div><div class="has_code"><code class="prettyprint rs">//&nbsp;--snip--<br>while&nbsp;let&nbsp;Ok(parsed)&nbsp;=&nbsp;prse::try_parse!(line,&nbsp;"{}[{}]({}){}")&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;let&nbsp;(before,&nbsp;display,&nbsp;link,&nbsp;after):&nbsp;(&str,&nbsp;&str,&nbsp;&str,&nbsp;&str)&nbsp;=&nbsp;parsed;<br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;before.ends_with("!")&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;panic!("Image&nbsp;not&nbsp;embedded&nbsp;correctly,&nbsp;this&nbsp;is&nbsp;likely&nbsp;because&nbsp;it&nbsp;has&nbsp;text&nbsp;before&nbsp;the&nbsp;[...&nbsp;or&nbsp;after&nbsp;the&nbsp;...)")<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;line&nbsp;=&nbsp;format!("{before}&lt;a&nbsp;href=\"{link}\"&gt;{display}&lt;/a&gt;{after}");<br>}<br>//&nbsp;--snip--<br></code></div><div><p>Then at the end, I stick all of the HTMLified markdown into an HTML template I made earlier with embedded styling (and syntax highlighting thanks to Google's <a href="https://github.com/googlearchive/code-prettify">code-prettify</a>)</p></div></body></html>

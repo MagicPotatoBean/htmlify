@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>scriptify</title>
+        <link href='https://fonts.googleapis.com/css?family=JetBrains Mono' rel='stylesheet'>
+        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+        <style>
+            span.pln {color:#84a0e0}
+            span.pun {color:#c6d0f5}
+            span.str {color:#9bc380}
+            span.lit {color:#df946f}
+            span.kwd {color:#ca9ee6}
+            span.com {color:#AAAAAA}
+            body {text-align: center;background-color: #1B1A21;color: white;font-family: 'JetBrains Mono';font-size: 22px}
+            div {margin:auto;width:50%;text-align:center}
+            h1 {margin:auto;max-width: 800px}
+            h2, h3, h4, h5, h6 {margin:auto;max-width: 700px}
+            p {margin:auto;max-width: 700px}
+            code {margin:auto;max-width: 700px;word-break:break-all}
+            span.inline_code {padding-right: 5px;padding-left: 5px;padding-bottom: 2px;padding-top: 2px;max-width: 700px;font-size: 15px;background-color: #23222B;border: 1px solid white;border-radius: 5px;text-align: left;margin-top:20px;margin-bottom:20px;display:inline}
+            div.has_code {padding: 5px;max-width: 700px;font-size: 15px;background-color: #23222B;border: 1px solid white;border-radius: 5px;text-align: left;margin-top:20px;margin-bottom:20px}
+            img {width:500px;padding-top:5px;padding-bottom:5px}
+            figure {max-width: 500px;margin:auto;border-top-width:1px;border-top-style:solid;border-bottom-width:1px;border-bottom-style:solid;margin-bottom:30px;margin-top:30px}
+            figcaption {margin-bottom:10px}
+            a {color: aquamarine}
+        </style>
+    </head>
+    <body><div><h1><a href="/">zoe.soutter.com</a></div></h1><hr><div><p></p></div><br><div><h1>Scriptify</div></h1><div><p></p></div><br><div><p><a href="https://github.com/MagicPotatoBean/scriptify">Github repo</a></p></div><div><p></p></div><br><div><p>Scriptify is a simple, small CLI app I wrote using rust-script (explained further down) which takes an entire cargo workspace and converts it into a single rust-script file, I actually wrote scriptify using a standard cargo workspace, and then used it to convert itself into a rust-script file!</p></div><div><p></p></div><br><div><h2>How to use it</div></h2><div><p></p></div><br><div><p>For a workspace like the following:</p></div><div><p></p></div><br><div class="has_code"><code class="prettyprint none">&nbsp;&nbsp;&nbsp;&nbsp;my_repo/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Cargo.toml<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Cargo.lock<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;src/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;main.rs<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;my_lib.rs<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;my_other_lib/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;mod.rs<br></code></div><div><p>You would run:</p></div><div class="has_code"><code class="prettyprint sh">&nbsp;&nbsp;&nbsp;&nbsp;scriptify.rs&nbsp;-r&nbsp;my_repo&nbsp;-o&nbsp;my_repo/my_repo_script.rs<br></code></div><div><p>Then, scriptify would take each of your modules and store them in the new script file, using the <span class="inline_code"><code>mod{}</code></span> block to keep namespacing identical (although I needed to then remove <span class="inline_code"><code>mod ModuleName</code></span> calls, otherwise it tries to call in an extra file which now doesn't exist).</p></div><div><p></p></div><br><div><p>Now, to run it, you can just run</p></div><div class="has_code"><code class="prettyprint sh">&nbsp;&nbsp;&nbsp;&nbsp;my_repo/my_repo_script.rs<br></code></div><div><p>However, if this doesn't work, you may need to run</p></div><div class="has_code"><code class="prettyprint sh">&nbsp;&nbsp;&nbsp;&nbsp;chmod&nbsp;+x&nbsp;my_repo/my_repo_script.rs<br></code></div><div><p>to make the file executable.</p></div><div><p></p></div><br><div><h2>Rust-script</div></h2><div><p></p></div><br><div><p>I wrote this app using <a href="https://discourse.nixos.org/t/nix-users-you-can-fearlessly-start-using-rust-scripts-already/35521/4">rust-script</a> where the cargo manifest is stored inside the source file, allowing you to execute the file like a shell script (if you have the <a href="https://nixos.org/download/">Nix package manager/Nixos</a> installed)</p></div></body></html>
